@@ -1,0 +1,147 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserEntity {
+  id: ID!
+  createdAt: DateTime!
+  updatedAT: DateTime!
+  username: String!
+  password: String!
+  email: String!
+  isAdmin: Boolean!
+  playlists: PlaylistEntity!
+  avatarUrl: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type PlaylistEntity {
+  id: ID!
+  createdAt: DateTime!
+  updatedAT: DateTime!
+  name: String!
+  user: UserEntity!
+  description: String
+  countTracks: Float!
+  tracks: TrackEntity!
+}
+
+type TrackEntity {
+  id: ID!
+  createdAt: DateTime!
+  updatedAT: DateTime!
+  artist: String!
+  name: String!
+  duration: Int!
+  total_count: Int!
+  playlist: PlaylistEntity!
+  album: AlbumEntity
+  coverUrl: String!
+}
+
+type AlbumEntity {
+  id: ID!
+  createdAt: DateTime!
+  updatedAT: DateTime!
+  artist: String!
+  name: String!
+  yearOfRelease: Float!
+  description: String!
+  countTrack: Float!
+  tracks: TrackEntity!
+  coverUrl: String!
+}
+
+type LoginResponse {
+  access_token: String!
+  refresh_token: String!
+  user: UserEntity!
+}
+
+type RegResponse {
+  access_token: String!
+  refresh_token: String!
+  newUser: UserEntity!
+}
+
+type Query {
+  findAllUsers: [UserEntity!]!
+  findOneUser(id: Float!): UserEntity!
+  findTracksByUser(id: Float!): [TrackEntity!]!
+  searchTracksBy(searchTerm: SearchTracksInput!): [TrackEntity!]!
+  findOneTracks(id: Float!): TrackEntity!
+  findAllAlbums: [AlbumEntity!]!
+  searchAlbumsBy(searchTerm: String!): [AlbumEntity!]!
+  findOneAlbum(id: Float!): AlbumEntity!
+  findPlaylistsByUser(userId: Float!): [PlaylistEntity!]!
+  findOnePlaylist(id: Float!): PlaylistEntity!
+}
+
+input SearchTracksInput {
+  searchQuery: String
+  limit: Int
+}
+
+type Mutation {
+  updateUser(input: UpdateUserInput!): UserEntity!
+  createTrack(input: CreateTrackInput!): TrackEntity!
+  updateTrack(input: UpdateTrackInput!): TrackEntity!
+  removeTrack(id: Float!): TrackEntity!
+  createAlbum: AlbumEntity!
+  updateAlbum(input: UpdateAlbumInput!): AlbumEntity!
+  removeAlbum(id: Float!): AlbumEntity!
+  createPlaylist(userId: Float!): PlaylistEntity!
+  updatePlaylist(input: UpdatePlaylistInput!): PlaylistEntity!
+  removePlaylist(id: Float!): PlaylistEntity!
+  registerUser(input: RegisterInput!): RegResponse!
+  loginUser(input: LoginInput!): LoginResponse!
+}
+
+input UpdateUserInput {
+  id: Float!
+  username: String
+  email: String
+  password: String
+}
+
+input CreateTrackInput {
+  album: Float
+  playlist: Float!
+}
+
+input UpdateTrackInput {
+  id: ID!
+  artist: String
+  name: String
+  album: Float
+}
+
+input UpdateAlbumInput {
+  id: ID!
+  name: String!
+  artist: String!
+  description: String
+  coverUrl: String
+  yearOfRelease: Int
+}
+
+input UpdatePlaylistInput {
+  id: Int!
+  name: String!
+  description: String
+}
+
+input RegisterInput {
+  username: String!
+  password: String!
+  email: String!
+}
+
+input LoginInput {
+  password: String!
+  email: String!
+}
